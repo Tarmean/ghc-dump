@@ -69,7 +69,7 @@ showPass' s = do
 
 dumpIn :: DynFlags -> Int -> String -> ModGuts -> CoreM ModGuts
 dumpIn dflags n phase guts = do
-#if Min_VERSION_ghc(9,4,0)
+#if MIN_VERSION_ghc(9,4,0)
     let prefix = dumpPrefix dflags
 #else
     let prefix = fromMaybe "non-module." $ dumpPrefix dflags
