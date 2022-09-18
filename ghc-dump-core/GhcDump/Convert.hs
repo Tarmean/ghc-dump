@@ -141,7 +141,11 @@ cvtIdInfo i =
                                   OccInfo.IAmDead    -> OccDead
                                   OccInfo.OneOcc{}   -> OccOneOcc
                                   oi@OccInfo.IAmALoopBreaker{} -> OccLoopBreaker (OccInfo.isStrongLoopBreaker oi)
+           #if MIN_VERSION_base(4,17,0)
+           , idiStrictnessSig = cvtSDoc $ ppr $ IdInfo.dmdSigInfo i
+           #else
            , idiStrictnessSig = cvtSDoc $ ppr $ IdInfo.strictnessInfo i
+           #endif
            , idiDemandSig     = cvtSDoc $ ppr $ IdInfo.demandInfo i
            , idiCallArity     = IdInfo.callArityInfo i
            }
