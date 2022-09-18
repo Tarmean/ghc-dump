@@ -69,7 +69,11 @@ showPass' s = do
 
 dumpIn :: DynFlags -> Int -> String -> ModGuts -> CoreM ModGuts
 dumpIn dflags n phase guts = do
-    let prefix = fromMaybe "dump" $ dumpPrefix dflags
+#if Min_VERSION_ghc(9,4,0)
+    let prefix = dumpPrefix dflags
+#else
+    let prefix = fromMaybe "non-module." $ dumpPrefix dflags
+#endif
         fname = printf "%spass-%04u.cbor.zstd" prefix n
     showPass' $ "GhcDump: Dumping core to "++fname
     let in_dump_dir = maybe id (</>) (dumpDir dflags)
