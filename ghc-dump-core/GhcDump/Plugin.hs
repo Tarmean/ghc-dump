@@ -39,7 +39,9 @@ install _opts todo = do
     return (intersperseDumps dflags todo)
 
 showDump :: DynFlags -> SDoc -> String
-#if MIN_VERSION_ghc(9,2,0)
+#if MIN_VERSION_ghc(9,4,0)
+showDump _dflags = showSDocUnsafe
+#elif MIN_VERSION_ghc(9,2,0)
 showDump _dflags = showSDocDump defaultSDocContext
 #else
 showDump dflags = showSDocDump dflags
