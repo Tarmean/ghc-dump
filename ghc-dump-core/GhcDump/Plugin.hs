@@ -60,7 +60,7 @@ intersperseDumps dflags = go 0 "desugar"
 showPass' :: String -> CoreM ()
 showPass' s = do
     dflags <- getDynFlags
-#if MIN_VERSION_ghc(9,5,0)
+#if MIN_VERSION_ghc(9,4,0)
     logger <- getLogger
     liftIO $ showPass logger s
 #elif MIN_VERSION_ghc(9,2,0)
