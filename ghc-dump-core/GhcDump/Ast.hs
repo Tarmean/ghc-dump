@@ -119,7 +119,16 @@ data IdDetails = VanillaId
                | TickBoxOpId
                | DFunId
                | CoVarId -- | introduced in GHC 8.0
+#if MIN_VERSION_base(4,17,0)
+               | JoinId { joinIdArity :: !Int
+                        , joinIdCBV :: Maybe [Bool] -- ^ introduced in GHC 9.4, if Just acts as WorkerLikeId 
+                        }
+               -- | introduced in GHC 9.4
+               -- stands for worker wrapper functions which expect tagged and evaluated arguments
+               | WorkerLikeId { workerLikeCBV :: [Bool] }
+#else
                | JoinId { joinIdArity :: !Int }
+#endif
                deriving (Eq, Ord, Generic, Show)
 instance Serialise IdDetails
 

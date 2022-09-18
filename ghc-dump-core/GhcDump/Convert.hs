@@ -19,7 +19,7 @@ import GHC.Unit.Module as Module (moduleName)
 import GHC.Unit.Module.Name as Module (ModuleName, moduleNameFS)
 import GHC.Types.Name (getOccName, occNameFS, OccName, getName, nameModule_maybe)
 import qualified GHC.Types.Id.Info as IdInfo
-import qualified GHC.Types.Basic as OccInfo (OccInfo(..), isStrongLoopBreaker)
+import qualified GHC.Types.Basic as OccInfo (OccInfo(..), isStrongLoopBreaker, CbvMark(..))
 import qualified GHC.Core.Stats as CoreStats
 import qualified GHC.Core as CoreSyn
 import GHC.Core (Expr(..), CoreExpr, Bind(..), CoreAlt, CoreBind, AltCon(..))
@@ -180,8 +180,9 @@ cvtIdDetails d =
 #if MIN_VERSION_ghc(8,0,0)
       IdInfo.CoVarId{} -> Ast.CoVarId
 #endif
-#if MIN_VERSION_ghc(9,2,0)
-      IdInfo.JoinId n _ -> Ast.JoinId n
+#if MIN_VERSION_ghc(9,4,0)
+      IdInfo.JoinId n t -> Ast.JoinId n (fmap (fmap (==OccInfo.MarkedCbv)) t)
+      IdInfo.WorkerLikeId n -> Ast.WorkerLikeId (fmap (== OccInfo.MarkedCbv) n)
 #elif MIN_VERSION_ghc(8,2,0)
       IdInfo.JoinId n -> Ast.JoinId n
 #endif
