@@ -180,7 +180,9 @@ cvtIdDetails d =
 #if MIN_VERSION_ghc(8,0,0)
       IdInfo.CoVarId{} -> Ast.CoVarId
 #endif
-#if MIN_VERSION_ghc(8,2,0)
+#if MIN_VERSION_ghc(9,2,0)
+      IdInfo.JoinId n _ -> Ast.JoinId n
+#elif MIN_VERSION_ghc(8,2,0)
       IdInfo.JoinId n -> Ast.JoinId n
 #endif
 
