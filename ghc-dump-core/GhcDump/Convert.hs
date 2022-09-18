@@ -293,8 +293,6 @@ cvtLit l =
           Literal.LitNumInt64 -> Ast.MachInt64 n
           Literal.LitNumWord -> Ast.MachWord n
           Literal.LitNumWord64 -> Ast.MachWord64 n
-          Literal.LitNumInteger -> Ast.LitInteger n
-          Literal.LitNumNatural -> Ast.LitNatural n
 #if MIN_VERSION_ghc(9,2,0)
           -- Lossy
           Literal.LitNumInt8 -> Ast.MachInt n
@@ -304,7 +302,12 @@ cvtLit l =
           Literal.LitNumWord16 -> Ast.MachWord n
           Literal.LitNumWord32 -> Ast.MachWord n
 #endif
-
+#if MIN_VERSION_ghc(9,4,0)
+          Literal.LitNumBigNat -> Ast.LitNatural n
+#else
+          Literal.LitNumInteger -> Ast.LitInteger n
+          Literal.LitNumNatural -> Ast.LitNatural n
+#endif
 #else
       Literal.MachInt x -> Ast.MachInt x
       Literal.MachInt64 x -> Ast.MachInt64 x
