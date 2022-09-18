@@ -65,6 +65,7 @@ reconExpr bm (ELet bs x)      = let bs' = map (bimap (reconBinder bm') (reconExp
 reconExpr bm (ECase x b alts) = let b' = reconBinder bm b
                                     bm' = insertBinder b' bm
                                 in ECase (reconExpr bm x) b' (map (reconAlt bm') alts)
+reconExpr bm (ETick t b) = ETick t (reconExpr bm b)
 reconExpr bm (EType t)        = EType (reconType bm t)
 reconExpr _  ECoercion        = ECoercion
 
